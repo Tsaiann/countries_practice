@@ -6,12 +6,15 @@ const countriesModule = {
   },
 
   getters: {
-
+    getResponse(state){
+      return state.res
+    }
   },
 
   mutations: {
     SET_RES(state, payload){
       state.res = payload
+      console.log('mutations SET_RES:', state.res)
     }
   },
 
@@ -21,7 +24,7 @@ const countriesModule = {
       const res= await api.get(apiUrl)
       payload = res
       context.commit('SET_RES', payload)
-      console.log(res,payload)
+      console.log( 'action:', res )
     }
   }
 }

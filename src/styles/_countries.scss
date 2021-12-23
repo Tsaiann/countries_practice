@@ -1,0 +1,26 @@
+.container{
+  @include boxSizing;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  font-size: 12px;
+}
+.data_row{
+  display: flex;
+  align-items: stretch;
+}
+.country_items{
+  @include boxSizing;
+  width: 100%;
+  border: 1px solid gray;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  .title{
+    width: 100%;
+    font-size: 14px;
+    font-weight: bolder;
+    border-bottom: 1px solid gray;
+    line-height: 1.5rem;
+  }
+}

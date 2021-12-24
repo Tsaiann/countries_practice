@@ -12,7 +12,7 @@
       <div class="row horizontal wrap stretch " data-row-count="5">
         <div v-for= "(item, i) in getResponse" :key="i" class="data_row">
           <div class="row vertical country_items">
-            <span class="title">{{item.name}}</span>
+            <span class="title" @click="openDialog(item)">{{item.name}}</span>
             <div data-space-vertical="0.5rem">
               <span class="tags">{{ item.alpha2Code }}</span>
               <span class="tags">{{ item.alpha3Code }}</span>
@@ -29,7 +29,31 @@
         title="詳細資料"
         :visible.sync="showDialog"
         width="40%">
-        <span>这是一段信息</span>
+        <div>
+          <el-form>
+            <el-form-item label="Name:"></el-form-item>
+            <el-form-item label="Top level domain:"></el-form-item>
+            <el-form-item label="Alpha 2 code:"></el-form-item>
+            <el-form-item label="Alpha 3 code:"></el-form-item>
+            <el-form-item label="Calling codes:"></el-form-item>
+            <el-form-item label="Capital:"></el-form-item>
+            <el-form-item label="Alt Spellings:"></el-form-item>
+            <el-form-item label="Sub region:"></el-form-item>
+            <el-form-item label="Population:"></el-form-item>
+            <el-form-item label="LatLng:"></el-form-item>
+            <el-form-item label="Demonym:"></el-form-item>
+            <el-form-item label="Area:"></el-form-item>
+            <el-form-item label="Time zones:"></el-form-item>
+            <el-form-item label="Borders:"></el-form-item>
+            <el-form-item label="Native name:"></el-form-item>
+            <el-form-item label="Numeric code:"></el-form-item>
+            <el-form-item label="Currencies:"></el-form-item>
+            <el-form-item label="Languages:"></el-form-item>
+            <el-form-item label="Translations:"></el-form-item>
+            <el-form-item label="Flag:"></el-form-item>
+            <el-form-item label="Cioc:"></el-form-item>
+          </el-form>
+        </div>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
         </span>
@@ -45,7 +69,7 @@ export default {
   date(){
     return{
       result: [],
-      showDialog:false,
+      showDialog:true,
     }
   },
   computed:{
@@ -59,7 +83,7 @@ export default {
       await this.GET_API()
       this.result= [...this.getResponse]
       console.log('callApi:', this.result)
-    }
+    },
   },
   created(){
     this.callApi()

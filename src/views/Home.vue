@@ -1,6 +1,10 @@
 <template>
-  <div class="home">
-    <div class="container">
+  <div class="container">
+    <div class="row horizontal v_center seach_input">
+      <span>Country: </span>
+      <el-input v-model="search" placeholder="請輸入關鍵字"></el-input>
+      <el-button type="primary" @click="handleSearch">Search</el-button>
+    </div>
       <div class="row horizontal">
         <el-pagination
           layout="total, prev, pager, next"
@@ -28,25 +32,29 @@
         </div>
       </div>
       <el-dialog
-        title="詳細資料"
+        :title="formData.name"
         :visible.sync="showDialog"
-        width="40%">
-        <div>
+        width="50%">
+        <div class="row horizontal">
+          <span class="tags">{{formData.alpha2Code}}</span>
+          <span class="tags">{{formData.alpha3Code}}</span>
+        </div>
+        <div class= "dialogForm">
           <el-form ref="form">
             <el-form-item label="Name:">{{formData.name}}</el-form-item>
             <el-form-item label="Top level domain:">{{formData.topLevelDomain? formData.topLevelDomain.join(', ') : ''}}</el-form-item>
             <el-form-item label="Alpha 2 code:">{{formData.alpha2Code}}</el-form-item>
             <el-form-item label="Alpha 3 code:">{{formData.alpha3Code}}</el-form-item>
-            <el-form-item label="Calling codes:">{{formData.callingCodes}}</el-form-item>
+            <el-form-item label="Calling codes:">{{formData.callingCodes? formData.callingCodes.join(', ') : ''}}</el-form-item>
             <el-form-item label="Capital:">{{formData.capital}}</el-form-item>
             <el-form-item label="Alt Spellings:">{{formData.altSpellings? formData.altSpellings.join(', ') : ''}}</el-form-item>
-            <el-form-item label="Sub region:">{{formData.subRegion}}</el-form-item>
+            <el-form-item label="Sub region:">{{formData.subregion}}</el-form-item>
             <el-form-item label="Population:">{{formData.population}}</el-form-item>
-            <el-form-item label="LatLng:">{{formData.latlng}}</el-form-item>
+            <el-form-item label="LatLng:">{{formData.latlng? formData.latlng.join(', ') : ''}}</el-form-item>
             <el-form-item label="Demonym:">{{formData.demonym}}</el-form-item>
             <el-form-item label="Area:">{{formData.area}}</el-form-item>
             <el-form-item label="Time zones:">{{formData.timeZones}}</el-form-item>
-            <el-form-item label="Borders:">{{formData.borders}}</el-form-item>
+            <el-form-item label="Borders:">{{formData.borders? formData.borders.join(', ') : ''}}</el-form-item>
             <el-form-item label="Native name:">{{formData.nativeName}}</el-form-item>
             <el-form-item label="Numeric code:">{{formData.numericCode}}</el-form-item>
             <el-form-item label="Currencies:">{{formData.currencies}}</el-form-item>
@@ -57,10 +65,9 @@
           </el-form>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">關閉</el-button>
+          <el-button @click="closeDialog">關閉</el-button>
         </span>
       </el-dialog>
-    </div>
   </div>
 </template>
 
@@ -74,6 +81,7 @@ export default {
       result: [],
       showDialog: false,
       formData: {},
+      search:''
     }
   },
 
@@ -83,7 +91,8 @@ export default {
 
   methods:{
     ...mapActions(['GET_API']),
-    ...mapMutations(['SET_PAGINATION','SET_RESULT']),
+    ...mapMutations(['SET_PAGINATION','SET_RESULT','SET_SEARCH']),
+
     // 把資料丟進來
     async callApi(){
       await this.GET_API()
@@ -105,6 +114,15 @@ export default {
       }
       this.SET_PAGINATION(currentData)
       this.result = [...this.getResult[this.getPagination.currentPage -1]]
+    },
+    //點擊時用關鍵字搜尋連上新的api資料
+    async handleSearch(){
+      await this.SET_SEARCH(this.search)
+      await this.GET_API()
+      this.result =[...this.getResult[this.getPagination.currentPage -1]]
+    },
+    closeDialog(){
+      this.showDialog = false
     }
   },
   created() {

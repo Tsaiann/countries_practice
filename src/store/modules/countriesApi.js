@@ -6,6 +6,7 @@ const countriesModule = {
     result:[],
     currentPage:1,
     total:0,
+    search:'',
   },
 
   getters: {
@@ -21,6 +22,9 @@ const countriesModule = {
         total: state.total
       }
       return currentData
+    },
+    getSearch(state){
+      return state.search
     }
   },
 
@@ -41,13 +45,17 @@ const countriesModule = {
     SET_PAGINATION(state, payload){
       state.currentPage = payload.currentPage
       state.total = payload.total
-      console.log('SET_PAGINATION:', payload )
+      console.log('mutations SET_PAGINATION:', payload )
+    },
+    SET_SEARCH(state, payload){
+      state.search = payload
+      console.log('mutations SET_SEARCH:', payload)
     }
   },
 
   actions: {
     async GET_API(context, payload){
-      const apiUrl ="https://restcountries.com/v2/all"
+      let apiUrl = context.state.search !== '' ?`https://restcountries.com/v2/name/${context.state.search}` : 'https://restcountries.com/v2/all'
       const res= await api.get(apiUrl)
       payload = res
       const currentData ={
@@ -57,7 +65,8 @@ const countriesModule = {
       context.commit('SET_RES', payload)
       context.commit('SET_RESULT', payload)
       context.commit('SET_PAGINATION', currentData)
-      console.log( 'action:', res )
+      context.commit('SET_SEARCH', '')
+      console.log( 'action GET_API:', context )
     }
   }
 }

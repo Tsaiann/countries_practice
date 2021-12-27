@@ -1,0 +1,15 @@
+.el-form-item__label{
+  background: rgb(255, 227, 232);
+  width: 40%;
+  text-align: left;
+}
+.el-dialog{
+  min-width: 100px;
+}
+.el-form-item__content{
+  &::before{
+    content:'';
+    width: 100px;
+    background: gray;
+  }
+}

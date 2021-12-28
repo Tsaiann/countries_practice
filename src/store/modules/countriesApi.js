@@ -50,6 +50,9 @@ const countriesModule = {
     SET_SEARCH(state, payload){
       state.search = payload
       console.log('mutations SET_SEARCH:', payload)
+    },
+    SET_SORT(state,payload){
+      state.result.sort(() => { return payload })
     }
   },
 

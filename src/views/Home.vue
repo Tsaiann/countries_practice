@@ -5,7 +5,7 @@
       <el-input v-model="search" placeholder="請輸入關鍵字"></el-input>
       <el-button type="primary" @click="handleSearch">Search</el-button>
     </div>
-      <div class="row horizontal">
+      <div class="row horizontal space_between">
         <el-pagination
           layout="total, prev, pager, next"
           :total="getPagination.total"
@@ -14,6 +14,7 @@
           @current-change="handleCurrentChange"
           >
         </el-pagination>
+        <div class="sort" @click="handleSort(-1)">Sort: a-z</div>
       </div>
       <div class="row horizontal wrap stretch " data-row-count="5">
         <div v-for="(item, i) in result" :key="i" class="data_row">
@@ -34,7 +35,8 @@
       <el-dialog
         :title="formData.name"
         :visible.sync="showDialog"
-        width="50%">
+        width="40%"
+        class="el_dialog_change">
         <div class="row horizontal">
           <span class="tags">{{formData.alpha2Code}}</span>
           <span class="tags">{{formData.alpha3Code}}</span>
@@ -48,19 +50,28 @@
             <el-form-item label="Calling codes:">{{formData.callingCodes? formData.callingCodes.join(', ') : ''}}</el-form-item>
             <el-form-item label="Capital:">{{formData.capital}}</el-form-item>
             <el-form-item label="Alt Spellings:">{{formData.altSpellings? formData.altSpellings.join(', ') : ''}}</el-form-item>
+            <el-form-item label="Region:">{{formData.region}}</el-form-item>
             <el-form-item label="Sub region:">{{formData.subregion}}</el-form-item>
             <el-form-item label="Population:">{{formData.population}}</el-form-item>
             <el-form-item label="LatLng:">{{formData.latlng? formData.latlng.join(', ') : ''}}</el-form-item>
             <el-form-item label="Demonym:">{{formData.demonym}}</el-form-item>
             <el-form-item label="Area:">{{formData.area}}</el-form-item>
-            <el-form-item label="Time zones:">{{formData.timeZones}}</el-form-item>
+            <el-form-item label="Time zones:">{{formData.timezones? formData.timezones.join(', ') : ''}}</el-form-item>
             <el-form-item label="Borders:">{{formData.borders? formData.borders.join(', ') : ''}}</el-form-item>
             <el-form-item label="Native name:">{{formData.nativeName}}</el-form-item>
             <el-form-item label="Numeric code:">{{formData.numericCode}}</el-form-item>
-            <el-form-item label="Currencies:">{{formData.currencies}}</el-form-item>
-            <el-form-item label="Languages:">{{formData.languages}}</el-form-item>
-            <el-form-item label="Translations:">{{formData.translations}}</el-form-item>
-            <el-form-item label="Flag:">{{formData.flag}}</el-form-item>
+            <el-form-item label="Currencies:">
+              <div v-for="(item, i) in formData.currencies" :key="i">{{`${item.name}(Code:${item.code}, ${item.symbol})`}}</div>
+            </el-form-item>
+            <el-form-item label="Languages:">
+              <div v-for="(item, i) in formData.languages" :key="i">{{`${item.name}(Native name:${item.nativeName},ISO 639:${item.iso639_1}, ${item.iso639_2})`}}</div>
+            </el-form-item>
+            <el-form-item label="Translations:">
+              <div v-for="(item, i) in formData.translations" :key="i">{{`${item}(${i})`}}</div>
+              </el-form-item>
+            <el-form-item label="Flag:">
+              <img :src="formData.flag" alt="img" width="60px">
+            </el-form-item>
             <el-form-item label="Cioc:">{{formData.cioc}}</el-form-item>
           </el-form>
         </div>
@@ -91,7 +102,12 @@ export default {
 
   methods:{
     ...mapActions(['GET_API']),
-    ...mapMutations(['SET_PAGINATION','SET_RESULT','SET_SEARCH']),
+    ...mapMutations([
+      'SET_PAGINATION',
+      'SET_RESULT',
+      'SET_SEARCH',
+      'SET_SORT'
+      ]),
 
     // 把資料丟進來
     async callApi(){
@@ -123,6 +139,12 @@ export default {
     },
     closeDialog(){
       this.showDialog = false
+    },
+    //按照字母排列
+    handleSort(val){
+      //https://ithelp.ithome.com.tw/articles/10225733 正數與負數排列
+      this.SET_SORT(val)
+      this.result=[...this.getResult[this.getPagination.currentPage -1]]
     }
   },
   created() {

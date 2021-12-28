@@ -47,7 +47,17 @@
   .tags{
     background: #f9c6cf;
     margin-right: 5px;
+    margin-bottom: 5px;
     padding: 3px;
     border-radius: 5px;
+  }
+  .sort{
+    font-size: 14px;
+    margin-right: 12px;
+    background: rgb(53, 151, 255);
+    color: #fff;
+    padding: 10px 25px;
+    border-radius: 20px;
+    cursor: pointer;
   }
 }

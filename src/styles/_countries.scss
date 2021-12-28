@@ -45,9 +45,10 @@
     }
   }
   .tags{
+    display: block;
     background: #f9c6cf;
-    margin-right: 5px;
-    padding: 3px;
+    padding: 5px;
+    margin: 5px 5px 5px 0;
     border-radius: 5px;
   }
   .sort{

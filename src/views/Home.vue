@@ -20,7 +20,7 @@
         <div v-for="(item, i) in result" :key="i" class="data_row">
           <div class="row vertical country_items">
             <span class="title" @click="openDialog(item)">{{item.name}}</span>
-            <div data-space-vertical="0.5rem">
+            <div class="row horizontal">
               <span class="tags">{{ item.alpha2Code }}</span>
               <span class="tags">{{ item.alpha3Code }}</span>
             </div>
